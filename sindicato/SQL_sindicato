@@ -1,0 +1,35 @@
+use sindicato;
+
+-- Tabela de Usuarios
+CREATE TABLE usuarios (
+    usu_Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,    -- Identificador único para o usuário
+    usu_Nome VARCHAR(100) NOT NULL,                     -- Nome do usuário
+    usu_Senha VARCHAR(255) NOT NULL,                    -- Senha do usuário
+    usu_Tipo ENUM('comum', 'admin') NOT NULL           -- Tipo de usuário: comum ou admin
+);
+
+-- Tabela de Filiados
+CREATE TABLE filiados (
+    flo_Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,    -- Identificador único do filiado
+    flo_Nome VARCHAR(100) NOT NULL,                     -- Nome do filiado
+    flo_CPF VARCHAR(18) NOT NULL,                       -- CPF do filiado
+    flo_RG VARCHAR(18) NOT NULL,                        -- RG do filiado
+    flo_Data_De_Nascimento DATE NOT NULL,               -- Data de nascimento
+    flo_Idade INT NOT NULL,                             -- Idade do filiado
+    flo_Empresa VARCHAR(100),                           -- Empresa onde o filiado trabalha
+    flo_Cargo VARCHAR(100),                             -- Cargo do filiado
+    flo_Situacao VARCHAR(20),                           -- Situação do filiado (ativo, inativo, etc.)
+    flo_Telefone_Residencial VARCHAR(18),               -- Telefone residencial
+    flo_Celular VARCHAR(18),                            -- Telefone celular
+    flo_Data_Ultima_Atualizacao TIMESTAMP               -- Data da última atualização dos dados
+);
+
+-- Tabela de Dependentes
+CREATE TABLE dependentes (
+    dpe_Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,     -- Identificador único do dependente
+    flo_Id INT NOT NULL,                                -- Chave estrangeira que referencia o filiado
+    dpe_Nome VARCHAR(100) NOT NULL,                     -- Nome do dependente
+    dpe_Data_De_Nascimento DATE NOT NULL,               -- Data de nascimento do dependente
+    dpe_Grau_De_Parentesco VARCHAR(50) NOT NULL,        -- Grau de parentesco
+    FOREIGN KEY (flo_Id) REFERENCES filiados(flo_Id) ON DELETE CASCADE    -- Relacionamento com a tabela de filiados
+);
